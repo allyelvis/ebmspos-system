@@ -1,33 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import Link from 'next/link';
+import React from 'react';
 
-const App = () => {
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get('/api/customers');
-        setCustomers(response.data);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-      }
-    };
-    fetchCustomers();
-  }, []);
-
+const Home = () => {
   return (
     <div>
-      <h1>Point of Sale System</h1>
-      <h2>Customers</h2>
-      <ul>
-        {customers.map((customer) => (
-          <li key={customer._id}>{customer.name}</li>
-        ))}
-      </ul>
+      <h1>Welcome to the POS System</h1>
+      <nav>
+        <ul>
+          <li><Link href="/inventory">Manage Inventory</Link></li>
+          <li><Link href="/transactions">Transaction History</Link></li>
+          <!-- Add more links as needed -->
+        </ul>
+      </nav>
     </div>
   );
 };
 
-export default App;
+export default Home;

@@ -23,4 +23,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Update product stock
+router.put('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).send('Product not found');
+    
+    product.quantity = req.body.quantity;
+    await product.save();
+    res.send(product);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 module.exports = router;
