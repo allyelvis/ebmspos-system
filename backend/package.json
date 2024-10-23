@@ -4,12 +4,11 @@
   "description": "Backend for EBMS POS System",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",  // Start the server using the transpiled code },
-    "build": "babel src -d dist",  // Build the project: transpile src to dist },
-    "test": "echo \"Error: no test specified\" && exit 1"  // Placeholder for tests
-  },
+    "start": "node dist/index.js",
+    "build": "babel src -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   "keywords": [],
-  "author": "Ally Elvis Nzeyimana",  // Add your name or organization here },
+  "author": "Ally Elvis Nzeyimana", 
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
