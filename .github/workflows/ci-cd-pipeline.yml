@@ -7,27 +7,84 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      # Checkout the latest code from the main branch
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Install dependencies
-        run: npm install
-      - name: Build the application
-        run: npm run build
-      - name: Run tests
-        run: npm test
+
+      # Navigate to the backend directory and install dependencies
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      # Build the backend (if needed, otherwise skip)
+      - name: Build backend
+        run: |
+          cd backend
+          npm run build
+
+      # Run backend tests
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: build-backend
+
+    steps:
+      # Checkout the latest code from the main branch
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Navigate to the frontend directory and install dependencies
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Build the frontend
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      # Run frontend tests
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build-backend, build-frontend]
+
     steps:
-      - uses: actions/checkout@v3
+      # Checkout the code again for the deployment
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up SSH to deploy to the production server
       - name: Deploy to production
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # Your deployment script here
-          ssh user@host "cd /path/to/app && git pull origin main && npm run deploy"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+          ssh -o StrictHostKeyChecking=no user@host "cd /path/to/app && git pull origin main && npm install && npm run deploy"
