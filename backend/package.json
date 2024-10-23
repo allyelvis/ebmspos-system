@@ -1,18 +1,24 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for EBMS POS System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/index.js",  // Start the server using the transpiled code
+    "build": "babel src -d dist",  // Build the project: transpile src to dist
+    "test": "echo \"Error: no test specified\" && exit 1"  // Placeholder for tests
   },
   "keywords": [],
-  "author": "",
+  "author": "Ally Elvis Nzeyimana",  // Add your name or organization here
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "mongoose": "^8.7.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",  // Babel CLI for transpiling
+    "@babel/preset-env": "^7.21.0"  // Babel preset for ES6+ support
   }
 }
